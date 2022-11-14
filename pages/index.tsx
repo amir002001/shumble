@@ -1,7 +1,30 @@
 import Head from "next/head";
 import Image from "next/image";
+import { firestore } from "../utils/firebasemanager";
+import { collection, query, onSnapshot } from "firebase/firestore";
+import { useState, useEffect } from "react";
+
+interface Prof {
+  name: string;
+  description: string;
+  image: string;
+  vote: number;
+}
 
 export default function Home() {
+  const [profs, setProfs] = useState<Prof[]>([]);
+  // const entries = await db.
+
+  const q = query(collection(firestore, "profs"));
+  onSnapshot(q, (querySnapshot) => {
+    const profs: Prof[] = [];
+    querySnapshot.forEach((doc) => {
+      profs.push(doc.data() as Prof);
+    });
+    console.log(profs.length);
+    setProfs(profs);
+  });
+
   return (
     <div>
       <Head>
@@ -12,27 +35,29 @@ export default function Home() {
 
       <main className="w-screen h-screen flex flex-col justify-center items-center">
         {/* Card */}
-        <div className="w-full h-full flex flex-col items-center justify-center">
-          {/* Picture */}
-          <div className="relative w-1/4 h-1/4">
-            <Image
-              src={"/El Sayed Mahmoud.webp"}
-              alt="prof picture" fill
-            ></Image>
+        {profs.length && (
+          <div className="w-full h-full flex flex-col items-center justify-center">
+            {/* Picture */}
+            <div className="relative w-1/4 h-1/4">
+              <Image src={profs[0].image} alt="prof picture" fill></Image>
+            </div>
+            {/* name */}
+            <div className="text-xl">
+              <p>{profs[0].name}</p>
+            </div>
+            {/* Description */}
+            <div className="text-slate-500">
+              <p>{profs[0].description}</p>
+            </div>
           </div>
-          {/* name */}
-          <div className="text-xl"> 
-          <p>El Sayed Mahmoud</p> 
-
-          </div> 
-          {/* Description */}
-          <div className="text-slate-500"> 
-          <p>Data strucures and algorithms professor at sheridan college</p> 
-          </div>
-          
-        </div>
+        )}
         {/* results button */}
-        <button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Results</button>
+        <button
+          type="button"
+          className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+        >
+          Results
+        </button>
       </main>
     </div>
   );

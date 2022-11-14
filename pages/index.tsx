@@ -1,5 +1,5 @@
-import Head from 'next/head'
-import Image from 'next/image'
+import Head from "next/head";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -10,9 +10,30 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        hello world
+      <main className="w-screen h-screen flex flex-col justify-center items-center">
+        {/* Card */}
+        <div className="w-full h-full flex flex-col items-center justify-center">
+          {/* Picture */}
+          <div className="relative w-1/4 h-1/4">
+            <Image
+              src={"/El Sayed Mahmoud.webp"}
+              alt="prof picture" fill
+            ></Image>
+          </div>
+          {/* name */}
+          <div className="text-xl"> 
+          <p>El Sayed Mahmoud</p> 
+
+          </div> 
+          {/* Description */}
+          <div className="text-slate-500"> 
+          <p>Data strucures and algorithms professor at sheridan college</p> 
+          </div>
+          
+        </div>
+        {/* results button */}
+        <button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Results</button>
       </main>
     </div>
-  )
+  );
 }
